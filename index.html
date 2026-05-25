@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Kickoff — Générateur de fiche projet</title>
+  <meta name="description" content="Générez votre fiche projet en 30 secondes. Nomenclature, jalons, checklist, email de lancement.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Inter:wght@400;500&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ══ STATE 1 : FORMULAIRE ══════════════════════════════════ -->
+  <main id="state-form" class="state active">
+
+    <header class="hero">
+      <div class="logo mono">Alpha No_Code</div>
+      <h1>Générez votre <span class="teal">fiche projet</span><br>en 30 secondes.</h1>
+      <p class="hero-sub mono">Nomenclature · Jalons · Checklist · Email de lancement</p>
+    </header>
+
+    <form id="kickoff-form" novalidate>
+      <div class="form-card">
+
+        <div class="field">
+          <label for="nom-client">Nom du client</label>
+          <input type="text" id="nom-client" name="nomClient" placeholder="Ex. : Studio Vega" autocomplete="off" required>
+          <span class="field-error" role="alert"></span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="type-projet">Type de projet</label>
+            <select id="type-projet" name="typeProjet" required>
+              <option value="">— Choisir —</option>
+              <option value="branding">Identité visuelle / Branding</option>
+              <option value="site">Site web (Webflow / WordPress / Next.js)</option>
+              <option value="digital">Campagne digitale (Meta / Google Ads)</option>
+              <option value="motion">Motion design / Vidéo</option>
+              <option value="seo">Contenu &amp; SEO</option>
+              <option value="autre">Autre</option>
+            </select>
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="field">
+            <label for="outil-pm">Outil de suivi</label>
+            <select id="outil-pm" name="outilPM" required>
+              <option value="">— Choisir —</option>
+              <option value="notion">Notion</option>
+              <option value="clickup">ClickUp</option>
+              <option value="asana">Asana / Trello</option>
+              <option value="sheets">Google Sheets</option>
+              <option value="autre">Autre</option>
+            </select>
+            <span class="field-error" role="alert"></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="budget">Budget</label>
+            <select id="budget" name="budget" required>
+              <option value="">— Choisir —</option>
+              <option value="&lt; 5k€">&lt; 5k€</option>
+              <option value="5–15k€">5–15k€</option>
+              <option value="15–30k€">15–30k€</option>
+              <option value="30k€+">30k€+</option>
+            </select>
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="field">
+            <label for="deadline">Deadline</label>
+            <input type="date" id="deadline" name="deadline" required>
+            <span class="field-error" role="alert"></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="prenom">Prénom interlocuteur</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Ex. : Marie" autocomplete="off" required>
+            <span class="field-error" role="alert"></span>
+          </div>
+
+          <div class="field">
+            <label for="email-contact">Email interlocuteur</label>
+            <input type="email" id="email-contact" name="emailContact" placeholder="marie@client.fr" autocomplete="off" required>
+            <span class="field-error" role="alert"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="contexte">Contexte projet</label>
+          <textarea id="contexte" name="contexte" rows="4" placeholder="Décrivez brièvement le projet, les enjeux, les contraintes clés..." required></textarea>
+          <span class="field-error" role="alert"></span>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          Générer la fiche projet
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+      </div>
+    </form>
+
+  </main>
+
+  <!-- ══ STATE 2 : GÉNÉRATION ══════════════════════════════════ -->
+  <div id="state-generating" class="state" aria-live="polite" aria-busy="true">
+    <div class="generating-inner">
+      <p class="label-gen mono">Génération en cours…</p>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STATE 3 : RÉSULTAT ════════════════════════════════════ -->
+  <div id="state-result" class="state">
+    <div class="result-container">
+
+      <!-- En-tête fiche -->
+      <div class="result-header">
+        <div class="result-tag mono">Fiche projet générée</div>
+        <h2 class="result-title" id="result-nomenclature"></h2>
+        <div class="result-meta" id="result-meta"></div>
+      </div>
+
+      <!-- Jalons -->
+      <section class="result-section" aria-labelledby="jalons-title">
+        <h3 class="section-title" id="jalons-title">Jalons clés</h3>
+        <ol class="timeline" id="result-jalons"></ol>
+      </section>
+
+      <!-- Checklist -->
+      <section class="result-section" aria-labelledby="checklist-title">
+        <h3 class="section-title" id="checklist-title">Checklist de lancement</h3>
+        <ul class="checklist" id="result-checklist"></ul>
+      </section>
+
+      <!-- Email -->
+      <section class="result-section" aria-labelledby="email-title">
+        <div class="section-title-row">
+          <h3 class="section-title" id="email-title">Email de lancement</h3>
+          <button class="btn-copy" id="btn-copy-email" aria-label="Copier l'email">Copier</button>
+        </div>
+        <pre class="email-template" id="result-email" tabindex="0"></pre>
+      </section>
+
+      <!-- Actions -->
+      <div class="result-actions">
+        <button class="btn-secondary" id="btn-csv">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Télécharger CSV
+        </button>
+        <button class="btn-secondary" id="btn-new">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7a5 5 0 1 1 1.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M2 10.5V7h3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Nouveau projet
+        </button>
+      </div>
+
+      <!-- CTA Calendly -->
+      <div class="cta-block">
+        <p class="cta-eyebrow mono">On va plus loin ?</p>
+        <h3 class="cta-title">Réserve un appel avec Alpha No_Code</h3>
+        <p class="cta-sub">30 min pour affiner la fiche, aligner les équipes et démarrer sur les chapeaux de roues.</p>
+        <a href="https://calendly.com/alpha-nocode" target="_blank" rel="noopener noreferrer" class="btn-cta">
+          Réserver un créneau →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
