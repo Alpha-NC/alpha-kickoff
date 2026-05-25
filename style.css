@@ -556,6 +556,42 @@ textarea {
 
 .btn-cta:active { transform: translateY(0); box-shadow: none; }
 
+/* Brief contexte */
+.result-brief {
+  margin-top: 14px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-sub);
+  line-height: 1.65;
+}
+
+/* CTA Notion secondaire */
+.cta-notion {
+  text-align: center;
+  padding: 4px 0 8px;
+}
+
+.btn-notion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--teal);
+  border-radius: var(--r-sm);
+  color: var(--teal);
+  text-decoration: none;
+  font-family: var(--ff-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 11px 22px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.btn-notion:hover {
+  background: rgba(11, 160, 143, 0.1);
+  color: #fff;
+}
+
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE — Mobile-first 768px
 ════════════════════════════════════════════════════════════════ */

@@ -33,6 +33,15 @@ const PM_LABELS = {
   autre:   'Autre',
 };
 
+const TYPE_ACCESS_LINE = {
+  branding: 'Votre accès Figma (direction créative) sera partagé dans les 24h.',
+  site:     'Votre accès Drive projet et les wireframes vous seront envoyés dans les 24h.',
+  digital:  'Vos assets créatifs et accès Google Ads / Meta Ads seront partagés dans les 24h.',
+  motion:   'Votre accès au dossier production (storyboard, rushs) sera partagé dans les 24h.',
+  seo:      'Votre accès au plan éditorial et aux outils d\'analyse sera partagé dans les 24h.',
+  autre:    'Votre dossier Google Drive projet vous sera partagé dans les 24h.',
+};
+
 // deltaDays = jours avant la deadline
 const JALONS = {
   branding: [
@@ -80,12 +89,11 @@ const JALONS = {
 };
 
 const CHECKLIST_COMMUNE = [
-  'Contrat signé',
-  'Acompte reçu (50%)',
-  'Brief écrit validé par le client',
-  'Accès partagés (Drive, brand assets…)',
-  'Réunion kick-off planifiée',
-  'Facturation intermédiaire calendrée',
+  'Dossier Google Drive créé et partagé',
+  'Email de bienvenue envoyé au client',
+  'Réunion de kickoff planifiée (Google Calendar)',
+  'Accès outils transmis (Figma / Notion / ClickUp selon projet)',
+  'Contrat / devis signé archivé',
 ];
 
 const CHECKLIST_PM = {
@@ -168,12 +176,10 @@ function buildEmail(data) {
     .map(item => '  ☐ ' + item)
     .join('\n');
 
-  const notionLine = data.pmKey === 'notion'
-    ? '\nVotre espace projet Notion : https://notion.so/alpha-nocode/template\n'
-    : '';
+  const accessLine = '\n' + (TYPE_ACCESS_LINE[data.typeKey] || TYPE_ACCESS_LINE.autre) + '\n';
 
   return [
-    'Objet : Lancement projet — ' + data.nomenclature,
+    'Objet : ' + data.nomClient + ' × Alpha No_Code — votre projet ' + TYPE_LABELS[data.typeKey] + ' est lancé',
     '',
     'Bonjour ' + data.prenom + ',',
     '',
@@ -192,7 +198,7 @@ function buildEmail(data) {
     '',
     '━━━ CHECKLIST DE LANCEMENT ━━━',
     checklistText,
-    notionLine,
+    accessLine,
     '━━━ CONTEXTE ━━━',
     data.contexte,
     '',
@@ -223,7 +229,7 @@ function buildCSV(data) {
     data.prenom,
     data.emailContact,
     PM_LABELS[data.pmKey],
-    'En cours',
+    'En attente de kickoff',
     today,
   ];
 
@@ -286,12 +292,16 @@ function renderResult(data) {
   // Nomenclature
   document.getElementById('result-nomenclature').textContent = data.nomenclature;
 
+  // Brief
+  document.getElementById('result-brief').textContent = data.contexte;
+
   // Meta
   const metaItems = [
     TYPE_LABELS[data.typeKey],
     data.budget,
     'Deadline : ' + fmtDateShort(data.deadline),
     PM_LABELS[data.pmKey],
+    data.prenom + ' — ' + data.emailContact,
   ];
   document.getElementById('result-meta').innerHTML = metaItems
     .map((item, i) => (i > 0 ? '<span class="meta-dot"></span>' : '') + '<span>' + item + '</span>')
