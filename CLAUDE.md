@@ -92,7 +92,7 @@ CLAUDE.md    → ce fichier
 
 ## 7. Placeholders
 
-- Calendly : `https://calendly.com/alpha-nocode`
+- Calendly : `https://calendly.com/agence-alphanc/audit-decouverte`
 - Template Notion : `https://notion.so/alpha-nocode/template`
 
 ---
