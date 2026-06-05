@@ -152,6 +152,23 @@
           <button class="btn-copy" id="btn-copy-email" aria-label="Copier l'email">Copier</button>
         </div>
         <pre class="email-template" id="result-email" tabindex="0"></pre>
+        <div class="email-send-zone">
+          <button class="btn-send-email" id="btn-send-email">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+              <path d="M1 2h13L8 7.5 1 2zm0 0v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="send-btn-label">Envoyer au client</span>
+          </button>
+          <div class="send-confirmation" id="send-confirmation" hidden>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="send-confirmation-text">
+              <span>Email préparé pour <strong id="send-recipient"></strong></span>
+              <span class="send-time" id="send-time"></span>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Actions -->

@@ -565,6 +565,70 @@ textarea {
   line-height: 1.65;
 }
 
+/* Email send zone */
+.email-send-zone {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-send-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: var(--ff-body);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 11px 18px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: opacity 0.18s, transform 0.15s;
+}
+
+.btn-send-email:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-send-email:active { transform: translateY(0); }
+
+.btn-send-email.sent {
+  background: transparent;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+}
+
+.send-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(11, 160, 143, 0.08);
+  border: 1px solid rgba(11, 160, 143, 0.25);
+  border-radius: var(--r-sm);
+  padding: 11px 14px;
+  color: var(--teal);
+  font-size: 13px;
+  animation: fadeUp 0.25s ease both;
+}
+
+.send-confirmation[hidden] { display: none; }
+.send-confirmation svg { flex-shrink: 0; }
+
+.send-confirmation-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.send-confirmation-text strong { color: #fff; font-weight: 500; }
+
+.send-time {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--text-sub);
+}
+
 /* CTA Notion secondaire */
 .cta-notion {
   text-align: center;

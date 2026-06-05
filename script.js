@@ -236,6 +236,15 @@ function buildCSV(data) {
   return BOM + headers.map(q).join(SEP) + '\n' + row.map(q).join(SEP);
 }
 
+function buildMailto(data) {
+  const subject = data.nomClient + ' × Alpha No_Code — votre projet ' + TYPE_LABELS[data.typeKey] + ' est lancé';
+  const lines = data.emailText.split('\n');
+  const body = lines.slice(2).join('\n');
+  return 'mailto:' + encodeURIComponent(data.emailContact)
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body='    + encodeURIComponent(body);
+}
+
 // ── Gestion des états ────────────────────────────────────────
 
 function showState(id) {
@@ -325,6 +334,11 @@ function renderResult(data) {
 
   // Email
   document.getElementById('result-email').textContent = data.emailText;
+
+  // Reset envoi
+  document.getElementById('send-confirmation').hidden = true;
+  document.getElementById('send-btn-label').textContent = 'Envoyer au client';
+  document.getElementById('btn-send-email').classList.remove('sent');
 }
 
 // ── Copier dans le presse-papiers ────────────────────────────
@@ -434,6 +448,24 @@ document.querySelectorAll('#kickoff-form input, #kickoff-form select, #kickoff-f
 document.getElementById('btn-copy-email').addEventListener('click', function () {
   if (!_data) return;
   copyToClipboard(_data.emailText, this, 'Copier');
+});
+
+document.getElementById('btn-send-email').addEventListener('click', function () {
+  if (!_data) return;
+  const a = document.createElement('a');
+  a.href = buildMailto(_data);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  const now = new Date();
+  document.getElementById('send-recipient').textContent = _data.emailContact;
+  document.getElementById('send-time').textContent =
+    now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) +
+    ' · ' + now.toLocaleDateString('fr-FR');
+  document.getElementById('send-confirmation').hidden = false;
+  document.getElementById('send-btn-label').textContent = 'Renvoyer';
+  this.classList.add('sent');
 });
 
 document.getElementById('btn-csv').addEventListener('click', function () {
